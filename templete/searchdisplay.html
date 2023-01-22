@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="indexdata.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="tablestyle.css"></link>
+</head>
+<body>
+    <style>
+
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: lightgray;
+          width: 20000px;
+          top: -8px;
+          left: -8px;
+          height: 45px;
+          position: relative;
+        }
+        
+        li {
+          float: left;
+        }
+        
+        li a, .dropbtn {
+          display: inline-block;
+          color: rgb(5, 5, 15);
+         font-size:20px;
+          text-align: center;
+          padding: 10px 20px;
+          text-decoration: none;
+        }
+        .active{
+        background-color: black;
+        color: white;
+        }
+        li a:hover , .dropdown:hover{
+          background-color: black;
+          color: white;
+        }
+        h1,h2,h3{
+        text-align:center; 
+        color: rgb(17, 19, 17);
+        }
+        </style>
+        <ul>
+          <li><a class="active" href="#home">Asset Verification System</a></li>
+          <li><a href="database.html">Asset details</a></li>
+          <li><a href="index.html">New Entry</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </ul>
+
+        <style>
+          td[data-href]{
+            cursor: pointer;
+          }
+        </style>
+        <div class="container">
+          <div class="table-wrapper">
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Employee id..">
+            <label for="status">Status:</label>
+
+        <select name="status" id="status">
+          <option value="PENDING">PENDING</option>
+          <option value="ACCEPTED">ACCEPTED</option>
+          <option value="REMARKS">REMARKS</option>
+        </select>
+        <button type="button" style = " background-color: rgb(238, 243, 245); border-radius: 25px;" onclick = "checkStatus()">search</button>
+          <table class="fl-table" id = "myTable" visibility = "visible">
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Finance Asset Code</th>
+                <th>Asset Name</th>
+                <th>Make & Model</th>
+                <th>Invoice Date</th>
+                <th>Entitlement Limit</th>
+                <th>Amount Reimbrused</th>
+                <th>Reimbrusement Date</th>
+                <th>status</th>
+                <th>Last update</th>
+              </tr>
+            </thead>
+            <tbody id = 'itemlist1' >
+              <tr>
+              <td>Employee.Employee_id</td>
+              <td>Employee.Employee_Name</td>
+              <td>Employee.Finance_Asset_Code</td>
+              <td>Employee.MakeModel</td>
+              <td>Employee.InvoiceDate</td>
+              <td>Employee.EntitlementLimit</td>
+              <td>Employee.AmountReimbrused</td>
+              <td>Employee.ReimbrusementDate</td>
+              <td>Employee.Status</td>
+              <td>Employee.LastUpdate</td>
+              <td data-href = "data.html" id = "link">details</td>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <style>
+        #myInput {
+  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 70%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+      </style>
+
+    <script>
+
+      $(document).ready(function() {
+        $(document.body).on('click', "td[data-href]",function(){
+          window.location.href = this.dataset.href
+        })
+      })
+
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function checkStatus() {
+    $("#itemlist1").children().remove();
+  var stat = document.getElementById('status').value;
+  console.log(stat)
+  try {
+    db.transaction(function(tx) { 
+      console.log("try working")
+      tx.executeSql(`SELECT * FROM Employee`, [], function(tx, result) {
+        
+        if (result.rows.length) { 
+          console.log("if working")
+          for (window.i = 0; i < result.rows.length; i++){
+            var row = result.rows.item(i);
+            var Status = row.Status;
+            window.Employee_id = row.Employee_id
+            window.Employee_Name = row.Employee_Name;
+            var Finance_Asset_Code = row.Finance_Asset_Code;
+            var AssetName = row.AssetName
+            var MakeModel = row.MakeModel;
+            var InvoiceDate =row.InvoiceDate
+            var EntitlementLimit = row.EntitlementLimit
+            var AmountReimbrused = row.AmountReimbrused
+            var ReimbrusementDate = row.ReimbrusementDate
+            var LastUpdate = row.LastUpdate;
+            console.log(Status)
+            if (stat == Status) {
+              console.log("workin")
+              
+              $("#itemlist1").append('<tr><td>'+Employee_id+' </td><td>'+Employee_Name+' </td><td>'+Finance_Asset_Code+' </td><td>' +AssetName+'</td><td>'+MakeModel+ ' </td><td>'+InvoiceDate+' </td><td>' + EntitlementLimit + '</td><td>' + AmountReimbrused + '</td><td>' + ReimbrusementDate +'</td><td>' + stat + '</td><td onclick = "loadEmployee()">' + LastUpdate +'</td>/tr>');
+    
+          } else {
+            // alert('FAILURE');
+          } 
+          }
+        }
+      }, function(tx, error) {
+        console.log('ERROR:', error);
+      });
+    });
+
+} catch (e) {
+console.log(e);
+}
+}
+function loadEmployee(){
+$("#itemlist").delegate("tr", "click", function loadEmployee() {
+    $(this).children().each(function() {
+        $("#itemlist").hide();
+        document.getElementById("myImageId").style.visibility = "visible"
+        document.getElementById("email").style.visibility = "visible"
+       // console.log("click!");
+       console.log($(this).html());
+       // cellText = cellText + $(this).html() + " "; } + '</tr></td>')
+       $("#additem").append('<tr><td>' + "name:" + $(this).html() + "</tr></td>")
+    })});
+}
+
+
+    </script>
+</body>
+</html>
+
