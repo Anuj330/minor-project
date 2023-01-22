@@ -5,11 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+    <script src="indexdata.js"></script>
     <title>Document</title>
     <!-- <script src="indexdata.js"></script> -->
     <link rel="stylesheet" href="tablestyle.css"></link>
 </head>
 <body>
+
+
+
+  <script>
+    $(document).ready(function() {
+      $(document.body).on('click', "td[data-href]",function(){
+        window.location.href = this.dataset.href
+      })
+    })
+    
+    function myFunction() {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }</script>
     <style>
 
         ul {
@@ -109,16 +141,7 @@
             </tbody>
           </table>
         </div>
-      </div>
-
-      <!-- <div class="split left">
-        <div class="centered">
-          <img src="img_avatar2.png" alt="Avatar woman">
-          <h2>Jane Flex</h2>
-          <p>Some text.</p>
-        </div>
-      </div> -->
-      
+      </div>      
 
  
       <table align=center margin-top: 123px>
@@ -143,34 +166,7 @@
 }
       </style>
 
-<script>
-$(document).ready(function() {
-  $(document.body).on('click', "td[data-href]",function(){
-    window.location.href = this.dataset.href
-  })
-})
 
-function myFunction() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-}</script>
 
 
   <img id = 'myImageId' src="images/img.png" style= "width:180px; margin-top:-245px; margin-left:480px; height:460px;">
@@ -206,7 +202,7 @@ function myFunction() {
   }
 </script> 
 
-    <script src="indexdata.js"></script>
+    
 
 </body>
 </html>
