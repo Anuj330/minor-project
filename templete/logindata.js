@@ -54,7 +54,7 @@ function GenerateOTP() {
 }
 var db = openDatabase("AdminDB", "1.0" , "AdminDB", "65636")
 
-$(function () {
+$(function() {
         db.transaction(function(transaction){
             const sql = "CREATE TABLE Admins " +  
             "(id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
